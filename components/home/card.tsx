@@ -126,17 +126,15 @@ export default function Card({
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-100">
                     <tr className="grid grid-cols-8">
-                      <th className="py-3 px-6 text-left font-medium col-span-2">Kategoria</th>
-                      <th className="py-3 px-6 text-left font-medium col-span-3">Lëndët</th>
-                      <th className="py-3 px-6 text-left font-medium col-span-1">Orët javore</th>
-                      <th className="py-3 px-6 text-left font-medium col-span-2">Nota mesatare</th>
+                      <th className="py-3 px-6 text-left font-medium col-span-4">Lëndët</th>
+                      <th className="py-3 px-6 text-left font-medium col-span-1">Orët </th>
+                      <th className="py-3 px-6 text-left font-medium col-span-3">Nota </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {selectedGradeData.categories.map((category) => (
                       <tr key={category.name} className="grid grid-cols-8">
-                        <td className="py-4 px-6 text-left col-span-2 text-gray-500 font-medium">{category.name}</td>
-                        <td className="px-6 text-left col-span-3">
+                        <td className="px-6 text-left col-span-4">
                           <div className="list-none list-disc list-inside">
                             {category.subjects.map((subject) => (
                               <p key={subject.name} className="no-wrap">{subject.name}</p>
@@ -150,7 +148,7 @@ export default function Card({
                             ))}
                           </div>
                         </td>
-                        <td className="px-6 text-left col-span-2">
+                        <td className="px-6 text-left col-span-3">
                           <div className="list-none mt-3">
                             {category.subjects.map((subject) => (
                               <input
