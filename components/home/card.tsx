@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import Balancer from "react-wrap-balancer";
 import GradesPopover from "@/components/home/grades-popover";
@@ -17,19 +16,45 @@ export default function Card({
   title: string;
   description: string;
 }) {
-  const [selectedGrade, setSelectedGrade] = useState("Klasa 9");
+  const [selectedGrade, setSelectedGrade] = useState("Klasa 3");
   const selectedGradeData = curriculumData.grades.find(
     (grade) => grade.grade === Number(selectedGrade.replace("Klasa ", ""))
   );
 
   const [grades, setGrades] = useState<Grades>({});
+  const [inputErrors, setInputErrors] = useState<Record<string, string>>({});
 
-  const handleGradeChange = (subjectName: string, grade: string) => {
+  const handleGradeChange = (subjectName: string, grade: number) => {
+    if (isNaN(grade)) {
+      setInputErrors((prevErrors) => ({
+        ...prevErrors,
+        [subjectName]: "Një ose më shumë nga vlerat e futura nuk është numer.",
+      }));
+      return;
+    }
+
+    if (grade < 1 || grade > 5) {
+      setInputErrors((prevErrors) => ({
+        ...prevErrors,
+        [subjectName]: "Vendosni një notë mes 1 dhe 5",
+      }));
+      return;
+    }
+
+    setInputErrors((prevErrors) => ({
+      ...prevErrors,
+      [subjectName]: "",
+    }));
+
     setGrades((prevGrades) => ({
       ...prevGrades,
-      [subjectName]: Number(grade),
+      [subjectName]: grade,
     }));
   };
+
+  useEffect(() => {
+    setInputErrors({});
+  }, [selectedGrade]);
 
   const calculateTotalGrade = () => {
     if (!selectedGradeData) {
@@ -43,7 +68,7 @@ export default function Card({
       category.subjects.forEach((subject) => {
         const grade = grades[subject.name];
 
-        if (typeof grade === 'number') {
+        if (typeof grade === "number") {
           const weeklyHours: number = subject.weekly_hours;
 
           totalGrade += grade * weeklyHours;
@@ -58,7 +83,6 @@ export default function Card({
       return 0; // Avoid division by zero error if no subjects are present
     }
   };
-
 
   return (
     <div className={"py-6 relative col-span-1 min-h-96 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md"}>
@@ -121,20 +145,44 @@ export default function Card({
                                 type="text"
                                 className="block w-full px-2 py-1 border border-gray-300 rounded-md"
                                 placeholder=""
-                                onChange={(e) =>
-                                  handleGradeChange(subject.name, e.target.value)
-                                }
-                              />
+                                onChange={(e) => {
+                                  const inputValue = e.target.value;
+                                  const numericValue = Number(inputValue);
 
+                                  handleGradeChange(subject.name, numericValue);
+
+                                }}
+                              />
                             ))}
                           </div>
                         </td>
+
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
               <h3 className="font-bold text-lg">  Mesatarja: {calculateTotalGrade().toFixed(2)}</h3>
+              <p className="text-xs text-red-500 pb-6">
+                {Object.values(inputErrors).filter((error) => error !== "").join(" ")}
+              </p>
+              {/*button to clear the fields*/}
+              <button
+                className="rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all hover:bg-white hover:text-black"
+                onClick={() => {
+                  setGrades({});
+                  const inputFields = document.getElementsByClassName(
+                    "block w-full px-2 py-1 border border-gray-300 rounded-md"
+                  ) as HTMLCollectionOf<HTMLInputElement>;
+
+                  // Clear all input field values
+                  Array.from(inputFields).forEach((input) => {
+                    input.value = "";
+                  });
+                }}
+              >
+                Pastro fushat
+              </button>
             </div>
           )}
         </div>

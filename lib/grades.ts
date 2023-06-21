@@ -30,7 +30,7 @@ const curriculumData: CurriculumData = {
           total_weekly_hours: 10,
           subjects: [
             {
-              name: "Gjuhe shqipe kl1",
+              name: "Gjuhe shqipe",
               weekly_hours: 8,
             },
             {
@@ -193,15 +193,15 @@ const curriculumData: CurriculumData = {
       categories: [
         {
           name: "GJUHET DHE KOMUNIKIMI",
-          total_weekly_hours: 10,
+          total_weekly_hours: 9,
           subjects: [
             {
-              name: "Gjuhe shqipe kl3",
-              weekly_hours: 8,
+              name: "Gjuhe shqipe",
+              weekly_hours: 6,
             },
             {
               name: "Gjuhe e huaj e pare",
-              weekly_hours: 2,
+              weekly_hours: 3,
             },
           ],
         },
@@ -230,7 +230,7 @@ const curriculumData: CurriculumData = {
           total_weekly_hours: 1,
           subjects: [
             {
-              name: "Edukim per shoqërine",
+              name: "Qytetari",
               weekly_hours: 1,
             },
           ],
@@ -247,12 +247,25 @@ const curriculumData: CurriculumData = {
               name: "Art pamor",
               weekly_hours: 1,
             },
+            {
+              name: "Kërcim",
+              weekly_hours: 1,
+            },
+            {
+              name: "Teater",
+              weekly_hours: 1,
+            },
           ],
         },
         {
           name: "EDUKIMI FIZIK, SPORTI DHE SHENDETI",
           total_weekly_hours: 3,
-          subjects: [],
+          subjects: [
+            {
+              name: "Edukim fizik",
+              weekly_hours: 1,
+            },
+          ],
         },
         {
           name: "TEKNOLOGJI DHE TIK",
@@ -265,9 +278,24 @@ const curriculumData: CurriculumData = {
           ],
         },
         {
+          name: "AFTËSIMI TEKNOLOGJIK PRAKTIK",
+          total_weekly_hours: 0,
+          subjects: [
+            {
+              name: "Aftesimi teknologjik praktik",
+              weekly_hours: 0,
+            },
+          ],
+        },
+        {
           name: "KURRIKULA ME ZGJEDHJE",
-          total_weekly_hours: 1,
-          subjects: [],
+          total_weekly_hours: 2,
+          subjects: [
+            {
+              name: "Lëndë me zgjedhje",
+              weekly_hours: 2,
+            },
+          ],
         },
       ],
     },
