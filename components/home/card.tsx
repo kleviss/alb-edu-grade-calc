@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import Balancer from "react-wrap-balancer";
 import GradesPopover from "@/components/home/grades-popover";
@@ -23,38 +23,34 @@ export default function Card({
 
   const [grades, setGrades] = useState<Grades>({});
   const [inputErrors, setInputErrors] = useState<Record<string, string>>({});
+  const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
-  const handleGradeChange = (subjectName: string, grade: number) => {
-    if (isNaN(grade)) {
+  const handleInputChange = (subjectName: string, e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    const numericValue = Number(inputValue);
+
+    if (isNaN(numericValue)) {
       setInputErrors((prevErrors) => ({
         ...prevErrors,
         [subjectName]: "Një ose më shumë nga vlerat e futura nuk është numer.",
       }));
-      return;
-    }
-
-    if (grade < 1 || grade > 5) {
+    } else if (numericValue < 1 || numericValue > 5) {
       setInputErrors((prevErrors) => ({
         ...prevErrors,
         [subjectName]: "Vendosni një notë mes 1 dhe 5",
       }));
-      return;
+    } else {
+      setInputErrors((prevErrors) => ({
+        ...prevErrors,
+        [subjectName]: "",
+      }));
+
+      setGrades((prevGrades) => ({
+        ...prevGrades,
+        [subjectName]: numericValue,
+      }));
     }
-
-    setInputErrors((prevErrors) => ({
-      ...prevErrors,
-      [subjectName]: "",
-    }));
-
-    setGrades((prevGrades) => ({
-      ...prevGrades,
-      [subjectName]: grade,
-    }));
   };
-
-  useEffect(() => {
-    setInputErrors({});
-  }, [selectedGrade]);
 
   const calculateTotalGrade = () => {
     if (!selectedGradeData) {
@@ -84,8 +80,26 @@ export default function Card({
     }
   };
 
+  useEffect(() => {
+    setInputErrors({});
+  }, [selectedGrade]);
+
+  useEffect(() => {
+    inputRefs.current = {};
+  }, []);
+
+  const clearFields = () => {
+    setGrades({});
+    setInputErrors({});
+    Object.values(inputRefs.current).forEach((input) => {
+      if (input) {
+        input.value = "";
+      }
+    });
+  };
+
   return (
-    <div className={"py-6 relative col-span-1 min-h-96 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md"}>
+    <div className="py-6 relative col-span-1 min-h-96 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md">
       <div className="mx-auto max-w-md text-center">
         <h2 className="bg-gradient-to-br from-black to-stone-500 bg-clip-text font-display text-xl font-bold text-transparent md:text-3xl md:font-normal">
           <Balancer>{title}</Balancer>
@@ -95,7 +109,6 @@ export default function Card({
             <ReactMarkdown>{description}</ReactMarkdown>
           </Balancer>
 
-          {/* Container for GradesPopover */}
           <div className="flex justify-center items-center h-12">
             <GradesPopover
               selectedGrade={selectedGrade}
@@ -138,51 +151,45 @@ export default function Card({
                           </div>
                         </td>
                         <td className="px-6 text-left col-span-2">
-                          <div className="list-none">
+                          <div className="list-none mt-3">
                             {category.subjects.map((subject) => (
                               <input
                                 key={subject.name}
                                 type="text"
-                                className="block w-full px-2 py-1 border border-gray-300 rounded-md"
+                                className="block w-full px-2 py-0 mt-1 mb-1 border border-gray-300 rounded-md"
                                 placeholder=""
-                                onChange={(e) => {
-                                  const inputValue = e.target.value;
-                                  const numericValue = Number(inputValue);
-
-                                  handleGradeChange(subject.name, numericValue);
-
+                                onChange={(e) => handleInputChange(subject.name, e)}
+                                ref={(input) => {
+                                  inputRefs.current[subject.name] = input;
                                 }}
                               />
                             ))}
                           </div>
                         </td>
-
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <h3 className="font-bold text-lg">  Mesatarja: {calculateTotalGrade().toFixed(2)}</h3>
+              <h3 className="font-bold text-lg">Mesatarja: {calculateTotalGrade().toFixed(2)}</h3>
               <p className="text-xs text-red-500 pb-6">
-                {Object.values(inputErrors).filter((error) => error !== "").join(" ")}
+                {Object.values(inputErrors)
+                  .filter((error) => error !== "")
+                  .map((error, index) => (
+                    <span key={index}>
+                      {error}
+                      <br />
+                    </span>
+                  ))}
               </p>
-              {/*button to clear the fields*/}
-              <button
-                className="rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all hover:bg-white hover:text-black"
-                onClick={() => {
-                  setGrades({});
-                  const inputFields = document.getElementsByClassName(
-                    "block w-full px-2 py-1 border border-gray-300 rounded-md"
-                  ) as HTMLCollectionOf<HTMLInputElement>;
 
-                  // Clear all input field values
-                  Array.from(inputFields).forEach((input) => {
-                    input.value = "";
-                  });
-                }}
-              >
-                Pastro fushat
-              </button>
+              <div className="flex justify-center">
+                <button
+                  className="rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all hover:bg-white hover:text-black" onClick={clearFields}
+                >
+                  Pastro fushat
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -190,3 +197,4 @@ export default function Card({
     </div>
   );
 }
+
