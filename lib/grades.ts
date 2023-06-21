@@ -263,7 +263,7 @@ const curriculumData: CurriculumData = {
           subjects: [
             {
               name: "Edukim fizik",
-              weekly_hours: 1,
+              weekly_hours: 3,
             },
           ],
         },
