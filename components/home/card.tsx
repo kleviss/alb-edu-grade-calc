@@ -6,6 +6,10 @@ import Balancer from "react-wrap-balancer";
 import GradesPopover from "@/components/home/grades-popover";
 import curriculumData from "@/lib/grades";
 
+interface Grades {
+  [key: string]: number;
+}
+
 export default function Card({
   title,
   description,
@@ -18,7 +22,7 @@ export default function Card({
     (grade) => grade.grade === Number(selectedGrade.replace("Klasa ", ""))
   );
 
-  const [grades, setGrades] = useState({});
+  const [grades, setGrades] = useState<Grades>({});
 
   const handleGradeChange = (subjectName: string, grade: string) => {
     setGrades((prevGrades) => ({
