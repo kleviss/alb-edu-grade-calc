@@ -237,7 +237,7 @@ const curriculumData: CurriculumData = {
         },
         {
           name: "ARTE",
-          total_weekly_hours: 2,
+          total_weekly_hours: 3,
           subjects: [
             {
               name: "Muzikë",
@@ -251,10 +251,7 @@ const curriculumData: CurriculumData = {
               name: "Kërcim",
               weekly_hours: 1,
             },
-            {
-              name: "Teater",
-              weekly_hours: 1,
-            },
+           
           ],
         },
         {
@@ -289,11 +286,11 @@ const curriculumData: CurriculumData = {
         },
         {
           name: "KURRIKULA ME ZGJEDHJE",
-          total_weekly_hours: 2,
+          total_weekly_hours: 0,
           subjects: [
             {
               name: "Lëndë me zgjedhje",
-              weekly_hours: 2,
+              weekly_hours: 0,
             },
           ],
         },
