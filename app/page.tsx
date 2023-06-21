@@ -28,18 +28,18 @@ export default async function Home() {
           style={{ animationDelay: "0.25s", animationFillMode: "forwards" }}
         >
           <Balancer>
-            Llogarit mesataren e notave në mënyrëtë shpejtë për çdo nxënës të shkollës 9-vjeçare. Plotëso të dhënat dhe shtyp butonin {"\"Llogarit\""}.
+            Llogarit mesataren e notave në mënyrë të shpejtë për çdo nxënës të shkollës 9-vjeçare. Plotëso të dhënat dhe shtyp butonin {"\"Llogarit\""}.
           </Balancer>
         </p>
-      
+
       </div>
       <div className="my-10 grid w-full max-w-screen-xl animate-fade-up grid-cols-1 gap-5 px-5 md:grid-cols-3 xl:px-0">
-      <div className="hidden md:block"></div>
-          <Card
-            key={"mesatrja"}
-            title={"Makina llogaritëse"}
-            description={"Viti shkollor 2022/2023"}
-          />
+        <div className="hidden md:block"></div>
+        <Card
+          key={"mesatrja"}
+          title={"Makina llogaritëse"}
+          description={"Viti shkollor 2022/2023"}
+        />
       </div>
       <div className="hidden md:block"></div>
     </>
